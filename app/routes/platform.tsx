@@ -18,8 +18,7 @@ export default function Platform() {
   const { id } = useParams<{ id: string }>()
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
-  const API_ENDPOINT = import.meta.env.VITE_GULA_DATA_URL || "http://localhost:3000";
-  const { data: game, error, loading } = useAPI<Games | Games[] | null>(`${API_ENDPOINT}/api/games/${id}`);
+  const { data: game, error, loading } = useAPI<Games | Games[] | null>(`/api/games/${id}`);
 
   if (error) throw new Error(error)
 
@@ -36,7 +35,6 @@ export default function Platform() {
           <GameSection
             key={group.id}
             group={group}
-            API_ENDPOINT={API_ENDPOINT}
             search={search}
           />
         ))
@@ -45,7 +43,6 @@ export default function Platform() {
           <GameSection
             key={game.id}
             group={game}
-            API_ENDPOINT={API_ENDPOINT}
             search={search}
           />
         )

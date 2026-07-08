@@ -3,6 +3,18 @@
   command = "npm run build"
 
 [[redirects]]
+  from = "/api/*"
+  to = "{{env.VITE_GAMES_API_ENDPOINT}}/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/static/ludo-router/*"
+  to = "{{env.VITE_GAMES_API_ENDPOINT}}/static/ludo-router/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200

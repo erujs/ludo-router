@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import type { GameStatus, GameSectionProps } from "~/lib/data-types";
 
-export function GameSection({ group, API_ENDPOINT, search, isHome = false }: GameSectionProps) {
+export function GameSection({ group, search, isHome = false }: GameSectionProps) {
   const statusOrder: Record<GameStatus, number> = {
     Completed: 0,
     Played: 1,
@@ -51,7 +51,7 @@ export function GameSection({ group, API_ENDPOINT, search, isHome = false }: Gam
             className="relative group overflow-hidden shadow-lg bg-gray-200 aspect-[2/3] w-full max-w-xs hover:shadow-2xl transition-shadow duration-300"
           >
             <img
-              src={`${API_ENDPOINT}/ludi-remix${game.image}`}
+              src={`${game.image}`}
               alt={game.title}
               className="absolute inset-0 w-full h-full object-fill"
               loading="lazy"

@@ -18,7 +18,6 @@ export interface Games {
 
 export interface GameSectionProps {
   group: Games;
-  API_ENDPOINT: string;
   search: string;
   isHome?: boolean;
 }

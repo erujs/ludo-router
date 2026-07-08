@@ -8,10 +8,9 @@ import type { Games } from "~/lib/data-types";
 export function Welcome() {
 	const [search, setSearch] = useState("");
 	const [showSearch, setShowSearch] = useState(false);
-	const API_ENDPOINT = import.meta.env.VITE_GAMES_API_ENDPOINT || "http://localhost:3000";
-	const { data: games, error, loading } = useAPI<Games[]>(`${API_ENDPOINT}/api/games`);
+	const { data: games, error, loading } = useAPI<Games[]>(`/api/games`);
 
-	// if (error) throw new Error(error)
+	if (error) throw new Error(error)
 
 	return (
 		<>
@@ -28,7 +27,6 @@ export function Welcome() {
 					<GameSection
 						key={group.id}
 						group={group}
-						API_ENDPOINT={API_ENDPOINT}
 						search={search}
 						isHome />
 				))}
