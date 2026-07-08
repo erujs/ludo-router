@@ -3,8 +3,14 @@
   command = "npm run build"
 
 [[redirects]]
-  from = "/api/*"
-  to = "{{env.VITE_GAMES_API_ENDPOINT}}/api/:splat"
+  from = "/api/:route"
+  to = "{{env:VITE_GAMES_API_ENDPOINT}}/api/:route"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/:route/*"
+  to = "{{env:VITE_GAMES_API_ENDPOINT}}/api/:route/:splat"
   status = 200
   force = true
 
