@@ -1,16 +1,10 @@
 [build]
   publish = "build/client"
-  command = "npm run build"
+  command = "test -n \"$VITE_GAMES_API_ENDPOINT\" || (echo 'ERROR: VITE_GAMES_API_ENDPOINT is not set' && exit 1); sed -i \"s|{{env.VITE_GAMES_API_ENDPOINT}}|${VITE_GAMES_API_ENDPOINT%/}|g\" netlify.toml && npm run build"
 
 [[redirects]]
-  from = "/api/:route"
-  to = "{{env:VITE_GAMES_API_ENDPOINT}}/api/:route"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/:route/*"
-  to = "{{env:VITE_GAMES_API_ENDPOINT}}/api/:route/:splat"
+  from = "/api/*"
+  to = "{{env.VITE_GAMES_API_ENDPOINT}}/api/:splat"
   status = 200
   force = true
 
