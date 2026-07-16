@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useAPI } from "~/hooks/use-api";
-import SearchBar from "~/components/search-bar";
-import HeaderShowcase from "~/components/header-showcase";
-import { GameSection } from "~/components/game-section";
+import { BottomNavigation } from "~/components/bottom-navigation";
+import { HeaderShowcase } from "~/components/header-showcase";
+import { GameSection, GameSectionSkeleton } from "~/components/game-section";
+import { Error } from "~/components/error";
 import type { Games } from "~/lib/data-types";
 
 export function Welcome() {
@@ -10,33 +11,37 @@ export function Welcome() {
 	const [showSearch, setShowSearch] = useState(false);
 	const { data: games, error, loading } = useAPI<Games[]>(`/api/games`);
 
-	if (error) throw new Error(error)
+	const renderContent = () => {
+		if (error) {
+			return <Error />;
+		}
+
+		return (
+			<div className="container mx-auto my-5 px-5 flex flex-col gap-5">
+				{!loading && (
+					<BottomNavigation
+						search={search}
+						setSearch={setSearch}
+						showSearch={showSearch}
+						setShowSearch={setShowSearch}
+					/>
+				)}
+
+				{loading ? (
+					<GameSectionSkeleton />
+				) : (
+					games?.map((group) => (
+						<GameSection key={group.id} group={group} search={search} isHome />
+					))
+				)}
+			</div>
+		);
+	};
 
 	return (
 		<>
 			<HeaderShowcase />
-
-			<div className="container mx-auto p-6">
-				{loading && (
-					<div className="fixed top-0 left-0 w-full h-1 z-50">
-						<div className="h-1 w-full bg-cyan-400 animate-pulse" />
-					</div>
-				)}
-
-				{games?.map((group) => (
-					<GameSection
-						key={group.id}
-						group={group}
-						search={search}
-						isHome />
-				))}
-
-				<SearchBar
-					search={search}
-					setSearch={setSearch}
-					showSearch={showSearch}
-					setShowSearch={setShowSearch} />
-			</div>
+			{renderContent()}
 		</>
 	);
 }

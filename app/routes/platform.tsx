@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Link, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useAPI } from "~/hooks/use-api";
-import { GameSection } from "~/components/game-section";
-import SearchBar from "~/components/search-bar";
-import { House } from "lucide-react";
+import { GameSection, GameSectionSkeleton } from "~/components/game-section";
+import { BottomNavigation } from "~/components/bottom-navigation";
+import { Error } from "~/components/error";
 import type { Games } from "~/lib/data-types";
 import type { Route } from "./+types/platform";
 
@@ -20,49 +20,42 @@ export default function Platform() {
   const [showSearch, setShowSearch] = useState(false);
   const { data: game, error, loading } = useAPI<Games | Games[] | null>(`/api/games/${id}`);
 
-  if (error) throw new Error(error)
+  const renderContent = () => {
+    if (error) {
+      return <Error />;
+    }
 
-  return (
-    <div className="container mx-auto p-8">
-      {loading && (
-        <div className="fixed top-0 left-0 w-full h-1 z-50">
-          <div className="h-1 w-full bg-cyan-400 animate-pulse" />
-        </div>
-      )}
-
-      {Array.isArray(game) ? (
-        game.map((group) => (
-          <GameSection
-            key={group.id}
-            group={group}
+    return (
+      <div className="container mx-auto p-8 flex flex-col gap-5">
+        {!loading && (
+          <BottomNavigation
             search={search}
+            setSearch={setSearch}
+            showSearch={showSearch}
+            setShowSearch={setShowSearch}
           />
-        ))
-      ) : (
-        game && (
-          <GameSection
-            key={game.id}
-            group={game}
-            search={search}
-          />
-        )
-      )}
+        )}
 
-      <div className="fixed bottom-20 right-6 color-white">
-        <Link
-          to="/"
-          className="flex items-center h-12 bg-white shadow-lg rounded-full border border-gray-300 transition-all duration-300 overflow-hidden cursor-pointer w-12 px-0 justify-center"
-        >
-          <House size={20} className="text-black" />
-        </Link>
+        {loading ? (
+          <GameSectionSkeleton />
+        ) : (() => {
+            if (Array.isArray(game)) {
+              return game.map((group) => (
+                <GameSection key={group.id} group={group} search={search} />
+              ));
+            }
+
+            if (game) {
+              return <GameSection key={game.id} group={game} search={search} />;
+            }
+
+            return null;
+          })()
+        }
       </div>
+    );
+  };
 
-      <SearchBar
-        search={search}
-        setSearch={setSearch}
-        showSearch={showSearch}
-        setShowSearch={setShowSearch}
-      />
-    </div>
-  );
+  return renderContent()
 }
+

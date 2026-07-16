@@ -21,3 +21,10 @@ export interface GameSectionProps {
   search: string;
   isHome?: boolean;
 }
+
+export interface BottomNavigationProps {
+  search: string;
+  setSearch: (val: string) => void;
+  showSearch: boolean;
+  setShowSearch: (val: boolean | ((prev: boolean) => boolean)) => void;
+}
