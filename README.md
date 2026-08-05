@@ -11,21 +11,14 @@ This is a [React Router](https://reactrouter.com) + [Vite](https://vitejs.dev) p
 
 ## Local Setup
 
-1. Clone the repo:
-
+### Clone and install dependencies:
 ```bash
 git@github.com:erujs/ludo-router.git
 cd ludo-router
-```
-
-2. Install dependencies:
-
-```bash
 npm i
 ```
 
-3. Run the development server:
-
+### Run the development server:
 ```bash
 npm run dev
 ```
